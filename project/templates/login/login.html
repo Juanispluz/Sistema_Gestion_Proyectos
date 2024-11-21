@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link href="{% static 'css/project/login_and_register.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block contenedor %}
+    <h1>Login</h1>
+    <form action="{% url 'login' %}" method="post">
+        {% csrf_token %}
+        <label for="correo">Usuario:</label>
+        <input type="text" name="correo" required>
+
+        <label for="password">Contraseña:</label>
+        <input type="password" name="password" required>
+
+        <button type="submit">Iniciar sesión</button>
+    </form>
+{% endblock %}

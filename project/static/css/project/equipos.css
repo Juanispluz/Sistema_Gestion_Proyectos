@@ -1,0 +1,122 @@
+/* Contenedor de la lista de tareas */
+ul.task-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex; /* Utilizamos flexbox para alinear en fila */
+    flex-wrap: wrap; /* Permite que las tareas se ajusten a varias líneas si no caben */
+    gap: 20px; /* Espaciado entre las tareas */
+}
+
+/* Contenedor de la tarea */
+.task-container {
+    border-radius: 15px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    background-color: #fff;
+    width: calc(33.33% - 20px); /* Ancho de la tarea, tres tareas por fila */
+    max-width: 300px; /* Aseguramos que las tareas no se agranden demasiado */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+    transition: all 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column; /* Mantener las tareas en una columna dentro de su contenedor */
+}
+
+/* Asegurar que las tareas se ajusten en pantallas más pequeñas */
+@media (max-width: 768px) {
+    .task-container {
+        width: calc(50% - 20px); /* Dos tareas por fila en pantallas medianas */
+    }
+}
+
+@media (max-width: 480px) {
+    .task-container {
+        width: 100%; /* Una tarea por fila en pantallas pequeñas */
+    }
+}
+
+/* Cabecera de la tarea */
+.task-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px; /* Mantén el espacio entre la cabecera y la imagen */
+}
+
+.task-title {
+    margin-left: 10px; /* Espacio entre la imagen y el título */
+}
+
+.task-title h5 {
+    margin: 0;
+    font-size: 1rem;
+    margin-bottom: 0px; /* Reducimos la separación entre el título y el nombre */
+}
+
+.task-title small {
+    font-size: 0.8rem;
+    color: gray;
+    margin-top: 0; /* Quitamos cualquier margen extra en la parte superior */
+}
+
+/* Detalles de la tarea */
+.task-details {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.task-priority, .task-status, .task-date {
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+/* Contenedor de la imagen de la tarea */
+.task-image-container {
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    position: relative;
+    height: 120px; /* Ajusta el tamaño según lo necesites */
+}
+
+/* Imagen de la tarea */
+.task-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 0;
+}
+
+/* Descripción */
+.task-description {
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+/* Contenedor de las acciones */
+.task-actions {
+    display: flex;
+    justify-content: flex-end; /* Alinea el botón a la derecha */
+    margin-top: 10px;
+    width: 100%; /* Asegura que el contenedor ocupe todo el espacio disponible */
+}
+
+/* Botón de editar tarea */
+.btn-edit-task {
+    font-size: 16px; /* Aumenta el tamaño de la fuente */
+    padding: 12px 24px; /* Añade más relleno (padding) para hacerlo más grande */
+    width: 100%; /* Hace que el botón ocupe el 100% del ancho disponible en su contenedor */
+    max-width: 300px; /* Limita el ancho máximo para que no se expanda demasiado */
+    background-color: #28a745; /* Color de fondo verde */
+    color: white; /* Texto blanco */
+    border: none; /* Elimina el borde por defecto */
+    border-radius: 5px; /* Borde redondeado */
+    transition: background-color 0.3s ease; /* Transición suave al pasar el cursor */
+}
+
+/* Cambia el color al pasar el cursor */
+.btn-edit-task:hover {
+    background-color: #218838; /* Color más oscuro al pasar el cursor */
+}

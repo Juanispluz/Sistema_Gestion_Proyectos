@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link href="{% static 'css/project/tasks.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block contenedor %}
+    <a href="{% url 'crear_tarea' id=equipo.nombre_equipo %}"><button>Crear Tarea</button></a>
+    <a href=""><button>Editar equipo</button></a>
+
+    <h2>{{ equipo.nombre_equipo }}</h2>
+    <h3>Líder: {{ equipo.usuario_lider_id.nombre }}</h3>
+
+    <h3>Miembros:</h3>
+    <ul>
+        {% for miembro in miembros %}
+            <li>{{ miembro.desarrollador_id.nombre }} ({{ miembro.desarrollador_id.correo }})</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Tareas:</h3>
+    <ul>
+        {% for tarea in tareas %}
+            <li>
+                {{ tarea.tarea_id.titulo }} <br>
+                Dev <br>
+                Fecha límite: {{ tarea.tarea_id.fecha_limite|date:"d/m/y" }} <br>
+                Prioridad: {{ tarea.tarea_id.get_prioridad_display }} <br>
+                Estado: {{ tarea.tarea_id.get_estado_display }} <br>
+                Descripción: {{ tarea.tarea_id.descripcion }} <br>
+                Observaciones: {{ tarea.tarea_id.observaciones }} <br>
+                <button>Ver tarea</button>
+                <button>Editar Tarea</button>
+                <button>Marcar como terminada</button>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}

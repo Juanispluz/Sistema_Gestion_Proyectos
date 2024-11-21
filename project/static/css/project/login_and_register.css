@@ -1,0 +1,45 @@
+/* ----------------------------------------------------------------------- */
+/* Registter.html */
+
+/* Botones de rol */
+.role-buttons {
+    display: flex;
+    gap: 10px;
+    margin: 10px 0;
+}
+
+.role-btn {
+    padding: 10px 20px;
+    border: 2px solid #007bff;
+    background-color: white;
+    color: #007bff;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.role-btn.active {
+    background-color: #007bff;
+    color: white;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Ocultar el input real del rol */
+#rol-input {
+    display: none;
+}

@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link href="{% static 'css/project/equipos.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block contenedor %}
+
+<ul>
+    <a href="{% url 'crear_tarea' id=equipo.nombre_equipo %}">
+        <button>Crear tarea</button>
+    </a>
+    
+    <h3>Miembros:</h3>
+    <ul>
+        {% for miembro in miembros %}
+            <li>{{ miembro.nombre }} ({{ miembro.correo }})</li>
+        {% endfor %}
+    </ul>
+
+    <h3>Tareas:</h3>
+    <ul>
+        {% for tarea_info in tareas %}
+            {% if tarea_info.tarea.id %}
+                <li>
+                    <div>
+
+                        <div>
+                            <h5>{{ tarea_info.tarea.titulo }}</h5>
+                            <small>{{ tarea_info.desarrollador.nombre }}</small>
+                        </div>
+                    </div>
+                    <div>
+                        <div>{{ tarea_info.tarea.get_prioridad_display }}</div>
+                        <div>{{ tarea_info.tarea.get_estado_display }}</div>
+                        <div>{{ tarea_info.tarea.fecha_limite|date:"d/m/y" }}</div>
+                    </div>
+                    <div>
+                        {% if tarea_info.tarea.descripcion %}
+                            {{ tarea_info.tarea.descripcion|truncatewords:10 }}{% if tarea_info.tarea.descripcion|length > 10 %}...{% endif %}
+                        {% else %}
+                            <span>No hay descripción disponible</span>
+                        {% endif %}
+                    </div>
+                    <div>
+                        <a href="{% url 'editar_tarea' id=tarea_info.tarea.id %}">
+                            <button>Editar / Terminada</button>
+                        </a>
+
+                        {% if tarea_info.tarea.id %}
+                        <a href="{% url 'eliminar_tarea' id=tarea_info.tarea.id %}">
+                            <button>Eliminar</button>
+                        </a>
+                    {% else %}
+                        <p>No se puede eliminar, ID de tarea no disponible.</p>
+                    {% endif %}
+
+
+                    </div>
+                </li>
+            {% endif %}
+        {% endfor %}
+    </ul>    
+{% endblock %}

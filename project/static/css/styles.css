@@ -1,0 +1,117 @@
+/* ----------------------------------------------------------------------- */
+/* Alertas de Django/Bootstrap */
+.alert {
+    position: fixed;  /* Hace que la alerta se quede fija en la pantalla */
+    bottom: -100px;    /* Empieza fuera de la pantalla, hacia abajo */
+    left: 50%;         /* Centra la alerta horizontalmente */
+    transform: translateX(-50%); /* Ajusta para que esté perfectamente centrada */
+    width: 75%;        /* El ancho se limita al 75% */
+    margin: 10px 0;    /* Espacio entre alertas */
+    white-space: normal;  /* Asegura que el texto no se desborde en una sola línea */
+    word-wrap: break-word;  /* Habilita el salto de línea en palabras largas */
+    overflow: hidden;  /* Evita que el contenido desborde el contenedor */
+    padding-right: 40px;  /* Deja espacio para la X */
+    z-index: 9999;     /* Asegura que la alerta quede por encima de otros elementos */
+    opacity: 0;        /* Comienza con la alerta oculta */
+    animation: aparecer 1s ease-out forwards;  /* Aparece en 1 segundo, manteniéndose visible */
+}
+
+.alert .close {
+    position: absolute;   /* Para que esté dentro de la alerta */
+    top: 50%;             /* Centrado vertical */
+    right: 10px;          /* Se posiciona a la derecha */
+    transform: translateY(-50%); /* Centra verticalmente con un pequeño ajuste */
+    font-size: 1.5rem;    /* Tamaño de la X */
+    cursor: pointer;     /* Muestra el cursor de puntero cuando pasa por encima */
+}
+
+/* Animación para hacer que la alerta aparezca desde abajo */
+@keyframes aparecer {
+    0% {
+        bottom: -100px;  /* Empieza fuera de la pantalla hacia abajo */
+        opacity: 0;      /* Comienza oculta */
+    }
+    50% {
+        bottom: 10px;    /* Sube ligeramente, pero no mucho */
+        opacity: 1;      /* Se vuelve completamente visible */
+    }
+    100% {
+        bottom: 10px;    /* Se mantiene en esa posición */
+        opacity: 1;      /* Se mantiene visible */
+    }
+}
+
+.dropdown-menu {
+    right: 0px;
+    left: auto;
+    min-width: 200px;
+}
+
+/* Index */
+.container {
+    padding: 0;
+    margin: 0;
+}
+
+/* ----------------------------------------------------------------------- */
+/* Index */
+
+/* Estilo para el cuadro de los equipos */
+.equipo-cuadro {
+    width: 100px;
+    height: 100px;
+    border: 3px solid transparent;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    transition: border 0.3s;
+}
+
+/* Estilo para el enlace dentro del cuadro */
+.equipo-cuadro a {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.6);
+    transition: background-color 0.3s ease;
+    border: 3px solid transparent;
+}
+
+/* Estilo para la primera letra del equipo */
+.equipo-cuadro a span {
+    font-size: 3rem;
+}
+
+/* Estilo para el nombre del equipo al lado del cuadro */
+.team-name {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 100%;
+    transform: translateY(-50%);
+    margin-left: 10px;
+    font-size: 16px;
+    color: black;
+    padding: 5px;
+    background-color: white;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    transition: border 0.3s;
+}
+
+/* Mostrar el nombre al pasar el mouse sobre el cuadro */
+.equipo-cuadro:hover .team-name {
+    display: block;
+    border-color: black; /* Borde alrededor del nombre */
+}
+
+/* Mostrar el borde del cuadro al pasar el mouse */
+.equipo-cuadro:hover a {
+    border-color: black; /* Borde alrededor del cuadro */
+}
+

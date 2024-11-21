@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+    <link href="{% static 'css/project/equipos.css' %}" rel="stylesheet" />
+{% endblock %}
+
+{% block contenedor %}
+<h1>Crear equipo</h1>
+<form action="" method="post" id="crear-equipo-form">
+    {% csrf_token %}
+    <label for="nombre_equipo">Nombre del equipo:</label>
+    <input type="text" id="nombre_equipo" name="nombre_equipo" oninput="verificarNombreEquipo()" required>
+    <p id="nombre-disponible"></p>
+
+    <label for="desarrolladores">Desarrolladores disponibles:</label>
+    <input type="text" id="buscador-desarrolladores" placeholder="Buscar desarrollador..." oninput="filtrarDesarrolladores()">
+    <div id="desarrolladores-lista">
+        {% for desarrollador in desarrolladores %}
+            <div>
+                <input type="checkbox" name="desarrolladores" value="{{ desarrollador.correo }}">
+                <label>{{ desarrollador.nombre }} ({{ desarrollador.correo }})</label>
+            </div>
+        {% endfor %}
+    </div>
+
+    <button type="submit">Crear Equipo</button>
+</form>
+{% endblock %}

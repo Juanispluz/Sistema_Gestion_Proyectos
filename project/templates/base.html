@@ -1,0 +1,117 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- Mostrar los iconos -->
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/favicon/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicon/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicon/favicon-16x16.png' %}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{% static 'img/favicon/android-chrome-192x192.png' %}">
+    <link rel="icon" type="image/png" sizes="512x512" href="{% static 'img/favicon/android-chrome-512x512.png' %}">
+    <link rel="manifest" href="{% static 'img/favicon/site.webmanifest' %}">
+    <link rel="shortcut icon" href="{% static 'img/favicon/favicon.ico' %}">    
+    
+    <!-- Mostrar los css -->
+    <link href="{% static 'css/bootstrap/bootstrap.min.css' %}" rel="stylesheet" />
+    <link href="{% static 'css/styles.css' %}" rel="stylesheet" />
+
+    <!-- Agregar Font Awesome para los iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <!-- Bloque para añadir más archivos CSS en plantillas hijas -->
+    {% block extra_css %}
+    {% endblock %}
+</head>
+<body>
+    <!-- Mostrar las notificaciones -->
+    {% if messages %}
+        <div id="mensaje-container">
+            {% for message in messages %}
+                <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %}" role="alert">
+                    {{ message }}
+                    <span class="close" onclick="this.parentElement.style.display='none'">&times;</span>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    <!-- Fin para mostrar las notificaciones -->
+
+    <div class="container-fluid p-0">
+        <div class="row g-0">
+            <!-- Columna de equipos (FIJA) -->
+            <div class="col-2 p-3 border-end vh-100" style="overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
+                <!-- Botón de registrar usuario -->
+
+                <a href="{% url 'register' %}">
+                    <button class="btn btn-primary w-100 mb-3">Registrar usuario</button>
+                </a>
+
+
+                <!-- Botón de crear equipo -->
+                <a href="{% url 'crear_equipo' %}">
+                    <button class="btn btn-success w-100 mb-3">Crear equipo</button>
+                </a>
+
+                <!-- Mostrar los equipos -->
+                {% if equipos %}
+                    <ul class="list-unstyled">
+                        {% for equipo in equipos %}
+                            <li class="m-3" style="width: 100px; height: 100px; border: 3px solid transparent; border-radius: 10px; position: relative; overflow: hidden; transition: border 0.3s;">
+                                <a href="{% url 'ver_info_equipo' equipo.nombre_equipo %}" 
+                                   class="d-flex justify-content-center align-items-center w-100 h-100 text-decoration-none text-dark" 
+                                   style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; background-color: rgba(255, 255, 255, 0.6); transition: background-color 0.3s ease; border: 3px solid transparent;">
+                                    <span class="h3">{{ equipo.nombre_equipo|slice:":1" }}</span>
+                                </a>
+                                <div class="team-name d-none position-absolute top-50 start-100 translate-middle-y ms-3" style="font-size: 16px; color: black; padding: 5px; background-color: white; border: 2px solid transparent; border-radius: 5px; transition: border 0.3s;">
+                                    {{ equipo.nombre_equipo }}
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p>No perteneces a ningún equipo.</p>
+                {% endif %}
+            </div>
+
+            <!-- Columna de contenido principal -->
+            <div class="col-10">
+                <!-- Navbar en la parte superior -->
+                <nav class="navbar navbar-expand-lg navbar-light border-bottom">
+                    <div class="container-fluid">
+                        <div class="d-flex ms-auto">
+                                <button class="btn btn-light position-relative me-3">
+                                    <i class="fas fa-bell"></i>
+                                    <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+                                </button>
+
+                                <div class="dropdown">
+                                    <button class="btn btn-light dropdown-toggle" type="button" id="userMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fas fa-user"></i>
+                                    </button>
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenuButton">
+                                        <li><a class="dropdown-item" href="{% url 'perfil' %}">Ver perfil</a></li>
+                                        <li><a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a></li>
+                                    </ul>
+                                </div>
+                        </div>
+                    </div>
+                </nav>
+
+                <!-- Contenedor para el contenido de cada plantilla -->
+                <div class="container-fluid p-3">
+                    {% block contenedor %}
+
+                    {% endblock %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mostrar los js -->
+    <script src="{% static 'js/bootstrap/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>
