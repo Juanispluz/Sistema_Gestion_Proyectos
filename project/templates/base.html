@@ -39,28 +39,37 @@
     {% endif %}
     <!-- Fin para mostrar las notificaciones -->
 
+    {% if request.session.logueado %}
+
     <div class="container-fluid p-0">
         <div class="row g-0">
             <!-- Columna de equipos (FIJA) -->
             <div class="col-2 p-3 border-end vh-100" style="overflow-y: scroll; scrollbar-width: none; -ms-overflow-style: none;">
-                <!-- Botón de registrar usuario -->
-
-                <a href="{% url 'register' %}">
-                    <button class="btn btn-primary w-100 mb-3">Registrar usuario</button>
+                <!-- Botón de inicio-->
+                <a href="{% url 'index' %}">
+                    <button class="btn btn-primary w-100 mb-3">Inicio</button>
                 </a>
+                
+                {% if request.session.rol == 'A' %}
+                    <a href="{% url 'register' %}">
+                        <button class="btn btn-primary w-100 mb-3">Registrar usuario</button>
+                    </a>
+                {% endif %}
 
+                {% if request.session.rol == 'L' %}
+                    <a href="{% url 'crear_equipo' %}">
+                        <button class="btn btn-success w-100 mb-3">Crear equipo</button>
+                    </a>
+                {% endif %}
 
-                <!-- Botón de crear equipo -->
-                <a href="{% url 'crear_equipo' %}">
-                    <button class="btn btn-success w-100 mb-3">Crear equipo</button>
-                </a>
 
                 <!-- Mostrar los equipos -->
                 {% if equipos %}
                     <ul class="list-unstyled">
                         {% for equipo in equipos %}
                             <li class="m-3" style="width: 100px; height: 100px; border: 3px solid transparent; border-radius: 10px; position: relative; overflow: hidden; transition: border 0.3s;">
-                                <a href="{% url 'ver_info_equipo' equipo.nombre_equipo %}" 
+                                
+                                <a href="{% url 'ver_info_equipo' equipo.nombre_equipo %}"
                                    class="d-flex justify-content-center align-items-center w-100 h-100 text-decoration-none text-dark" 
                                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; background-color: rgba(255, 255, 255, 0.6); transition: background-color 0.3s ease; border: 3px solid transparent;">
                                     <span class="h3">{{ equipo.nombre_equipo|slice:":1" }}</span>
@@ -80,22 +89,30 @@
             <div class="col-10">
                 <!-- Navbar en la parte superior -->
                 <nav class="navbar navbar-expand-lg navbar-light border-bottom">
+                    {% if request.session.rol == 'A' %}
+                        <h6>Administrador</h6>
+                    {% endif %}
+                    {% if request.session.rol == 'L' %}
+                        <h6>Lider</h6>
+                    {% endif %}
+                    {% if request.session.rol == 'D' %}
+                        <h6>Desarrollador</h6>
+                    {% endif %}
                     <div class="container-fluid">
                         <div class="d-flex ms-auto">
-                                <button class="btn btn-light position-relative me-3">
-                                    <i class="fas fa-bell"></i>
-                                    <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
-                                </button>
+                            <button class="btn btn-light position-relative me-3">
+                                <i class="fas fa-bell"></i>
+                                <span class="position-absolute top-0 start-100 translate-middle p-1 bg-danger border border-light rounded-circle"></span>
+                            </button>
 
-                                <div class="dropdown">
-                                    <button class="btn btn-light dropdown-toggle" type="button" id="userMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                                        <i class="fas fa-user"></i>
-                                    </button>
-                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenuButton">
-                                        <li><a class="dropdown-item" href="{% url 'perfil' %}">Ver perfil</a></li>
-                                        <li><a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a></li>
-                                    </ul>
-                                </div>
+                            <div class="dropdown">
+                                <button class="btn btn-light dropdown-toggle" type="button" id="userMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-user"></i>
+                                </button>
+                                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenuButton">
+                                    <li><a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </nav>
@@ -103,12 +120,19 @@
                 <!-- Contenedor para el contenido de cada plantilla -->
                 <div class="container-fluid p-3">
                     {% block contenedor %}
-
+                    
                     {% endblock %}
                 </div>
             </div>
         </div>
     </div>
+    {% else %}
+        <div class="container-fluid p-3">
+            {% block contenedor2 %}
+            
+            {% endblock %}
+        </div>
+    {% endif %}
 
     <!-- Mostrar los js -->
     <script src="{% static 'js/bootstrap/bootstrap.bundle.min.js' %}"></script>

@@ -6,24 +6,80 @@
 {% endblock %}
 
 {% block contenedor %}
-<h1>Crear equipo</h1>
+<h1>{% if editar %}Gestionar{% else %}Crear{% endif %} equipo</h1>
 <form action="" method="post" id="crear-equipo-form">
     {% csrf_token %}
     <label for="nombre_equipo">Nombre del equipo:</label>
-    <input type="text" id="nombre_equipo" name="nombre_equipo" oninput="verificarNombreEquipo()" required>
+    <input type="text" id="nombre_equipo" name="nombre_equipo" 
+           {% if editar %}value="{{ equipo.nombre_equipo }}" readonly{% endif %}
+           {% if not editar %}oninput="verificarNombreEquipo()"{% endif %} 
+           required>
     <p id="nombre-disponible"></p>
 
-    <label for="desarrolladores">Desarrolladores disponibles:</label>
-    <input type="text" id="buscador-desarrolladores" placeholder="Buscar desarrollador..." oninput="filtrarDesarrolladores()">
-    <div id="desarrolladores-lista">
-        {% for desarrollador in desarrolladores %}
-            <div>
-                <input type="checkbox" name="desarrolladores" value="{{ desarrollador.correo }}">
-                <label>{{ desarrollador.nombre }} ({{ desarrollador.correo }})</label>
-            </div>
+    {% if gestionar_equipo %}
+    <label for="usuario_lider">Cambiar líder:</label>
+    <select name="usuario_lider" id="usuario_lider">
+        <option value="">Seleccionar nuevo líder</option>
+        {% for lider in lideres %}
+            <option value="{{ lider.correo }}" {% if lider == equipo.usuario_lider_id %}selected{% endif %}>
+                {{ lider.nombre }} ({{ lider.correo }})
+            </option>
         {% endfor %}
+    </select>
+    {% endif %}
+
+    <label for="desarrolladores">
+        {% if editar %}Buscar del Dev{% else %}Desarrolladores disponibles{% endif %}:
+    </label>
+    <input type="text" id="buscador-desarrolladores" placeholder="Buscar desarrollador..." oninput="filtrarDesarrolladores()">
+    
+    <div id="desarrolladores-lista">
+        {% if not editar %}
+            {% for desarrollador in desarrolladores %}
+                {% if not desarrollador.equipos_set.exists %}
+                    <div>
+                        <input type="checkbox" name="desarrolladores" value="{{ desarrollador.correo }}" onchange="verificarNumeroDesarrolladores(this)">
+                        <label>{{ desarrollador.nombre }} ({{ desarrollador.correo }})</label>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% else %}
+            <h3>Miembros actuales</h3>
+            {% for miembro in miembros_actuales %}
+                <div>
+                    <input type="checkbox" name="desarrolladores" value="{{ miembro.desarrollador_id.correo }}" checked>
+                    <label>{{ miembro.desarrollador_id.nombre }} ({{ miembro.desarrollador_id.correo }})</label>
+                </div>
+            {% endfor %}
+            
+            <h3>Agregar desarrolladores</h3>
+            {% for desarrollador in desarrolladores %}
+                {% if not desarrollador.equipos_set.exists %}
+                    <div>
+                        <input type="checkbox" name="desarrolladores" value="{{ desarrollador.correo }}">
+                        <label>{{ desarrollador.nombre }} ({{ desarrollador.correo }})</label>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
     </div>
 
-    <button type="submit">Crear Equipo</button>
+    <button type="submit">{% if editar %}Actualizar{% endif %} Equipo</button>
 </form>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Verificar el número máximo de desarrolladores
+    {% if not editar %}
+    const checkboxes = document.querySelectorAll('#desarrolladores-lista input[type="checkbox"]');
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            verificarNumeroDesarrolladores(this);
+        });
+    });
+    {% endif %}
+});
+</script>
 {% endblock %}

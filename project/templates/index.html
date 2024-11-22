@@ -2,5 +2,20 @@
 {% load static %}
 
 {% block contenedor %}
-<h1>Index</h1>
+<h1>Bienvenido, {{ request.session.correo }}</h1>
+
+{% if tareas_recientes %}
+    <h2>Tareas recientes asignadas:</h2>
+    <ul>
+        {% for tarea in tareas_recientes %}
+            <li>
+                <strong>{{ tarea.titulo }}</strong> - {{ tarea.descripcion }}<br>
+                <em>Fecha límite:</em> {{ tarea.fecha_limite }}
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>No hay tareas recientes asignadas.</p>
+{% endif %}
+
 {% endblock %}

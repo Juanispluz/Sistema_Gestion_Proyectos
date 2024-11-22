@@ -6,12 +6,26 @@
 {% endblock %}
 
 {% block contenedor %}
+    {% if request.session.rol == 'L' %}
+        <ul>
+            <a href="{% url 'crear_tarea' id=equipo.nombre_equipo %}">
+                <button>Crear tarea</button>
+            </a>
 
-<ul>
-    <a href="{% url 'crear_tarea' id=equipo.nombre_equipo %}">
-        <button>Crear tarea</button>
-    </a>
+            <a href="{% url 'editar_equipo' id=equipo.nombre_equipo %}">
+                <button type="button">Gestionar equipo</button>
+            </a>
+
+            <a href="{% url 'eliminar_equipo' id=equipo.nombre_equipo %}">
+                <button type="button">Eliminar equipo</button>
+            </a>
+        </ul>
+    {% endif %}
+
+    <h1>{{ equipo.nombre_equipo }}</h1>
     
+    <h3>{{ equipo.lider_info }}</h3>
+
     <h3>Miembros:</h3>
     <ul>
         {% for miembro in miembros %}
@@ -25,9 +39,10 @@
             {% if tarea_info.tarea.id %}
                 <li>
                     <div>
-
                         <div>
-                            <h5>{{ tarea_info.tarea.titulo }}</h5>
+                            <a href="{% url 'ver_tarea' id=tarea_info.tarea.id %}">
+                                <h5>{{ tarea_info.tarea.titulo }}</h5>
+                            </a>
                             <small>{{ tarea_info.desarrollador.nombre }}</small>
                         </div>
                     </div>
@@ -45,21 +60,28 @@
                     </div>
                     <div>
                         <a href="{% url 'editar_tarea' id=tarea_info.tarea.id %}">
-                            <button>Editar / Terminada</button>
+                            <button>
+                                {% if request.session.rol == 'L' %}
+                                    Editar
+                                {% endif %}
+                                {% if request.session.rol == 'D' %}
+                                    Terminada
+                                {% endif %}
+                            </button>
                         </a>
-
-                        {% if tarea_info.tarea.id %}
-                        <a href="{% url 'eliminar_tarea' id=tarea_info.tarea.id %}">
-                            <button>Eliminar</button>
-                        </a>
-                    {% else %}
-                        <p>No se puede eliminar, ID de tarea no disponible.</p>
-                    {% endif %}
-
-
+                        {% if request.session.rol == 'L' %}
+                            {% if tarea_info.tarea.id %}
+                            <a href="{% url 'eliminar_tarea' id=tarea_info.tarea.id %}">
+                                <button>Eliminar</button>
+                            </a>
+                            {% else %}
+                                <p>No se puede eliminar, ID de tarea no disponible.</p>
+                            {% endif %}
+                        {% endif %}
                     </div>
                 </li>
             {% endif %}
         {% endfor %}
     </ul>    
+
 {% endblock %}

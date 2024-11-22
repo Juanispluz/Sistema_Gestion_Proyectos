@@ -46,6 +46,7 @@ class Equipos(models.Model):
     def lider_info(self):
         return f"Líder: {self.usuario_lider_id.correo}"
 
+
 class Observaciones_Tareas(models.Model):
     id = models.AutoField(primary_key=True)
     usuario_observacion = models.ForeignKey('Usuarios', on_delete=models.CASCADE)

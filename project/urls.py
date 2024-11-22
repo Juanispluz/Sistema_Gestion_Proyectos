@@ -9,6 +9,8 @@ urlpatterns = [
     path("login/", views.login, name="login"),
     path("register/", views.register, name="register"),
     path("logout/", views.logout, name="logout"),
+    path('verificar_correo_y_contraseña/', views.verificar_correo_y_contraseña, name="verificar_correo_y_contraseña"),
+    path('existencia_correo/', views.existencia_correo, name="existencia_correo"),
 
     #-----------------------------------------------------------------------
     # Equipos
@@ -23,11 +25,6 @@ urlpatterns = [
     path('crear_tarea/<path:id>', views.crear_task, name='crear_tarea'),
     path("editar_tarea/<int:id>", views.editar_task ,name="editar_tarea"),
     path("eliminar_tarea/<int:id>", views.eliminar_task ,name="eliminar_tarea"),
-    # path("tarea/<path:id>", views.recoleccion_info ,name="ver_info_tarea"),
-
-
-    path("perfil/", views.perfil, name="perfil")
-    #-----------------------------------------------------------------------
-    # Notificaciones
+    path('tarea/<path:id>/', views.ver_info_tarea, name='ver_tarea'),
 
 ]

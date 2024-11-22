@@ -1,18 +1,6 @@
-// ----------------------------------------------------------------------- 
-// Alertas de Django/Bootstrap 
-// document.querySelectorAll('.close').forEach(function (button) {
-//     button.addEventListener('click', function () {
-//         const alertBox = button.closest('.alert');
-        
-//         // Añadimos la animación de desaparición
-//         alertBox.style.animation = 'desaparecer 1s forwards';  // Activamos la animación de desaparición
-
-//         // Esperamos a que la animación termine antes de eliminar el elemento
-//         setTimeout(function () {
-//             alertBox.remove();  // Elimina la alerta después de que la animación haya terminado
-//         }, 1000);  // 1000 ms es el tiempo de duración de la animación de desaparición
-//     });
-// });
+// Obtener elementos del DOM
+const correoInput = document.getElementById('correo');
+const correoExistenteError = document.getElementById('correo-existente-error');
 
 // Buscar desarrolladores 
 function filtrarDesarrolladores() {
@@ -52,8 +40,48 @@ document.querySelectorAll('li').forEach(item => {
 // -----------------------------------------------------------------------
 // Register
 
-// Ventana emergente
+document.addEventListener("DOMContentLoaded", function () {
+    const correoInput = document.getElementById("correo");
+    const correoConfirmInput = document.getElementById("correo_confirm");
+    const correoError = document.getElementById("correo-error");
+    const correoExistenteError = document.getElementById("correo-existente-error");
 
+    const passwordInput = document.getElementById("password");
+    const passwordConfirmInput = document.getElementById("password_confirm");
+    const passwordError = document.getElementById("password-error");
+
+    // Validar correos coincidan
+    correoConfirmInput.addEventListener("input", function () {
+        if (correoInput.value !== correoConfirmInput.value) {
+            correoError.textContent = "Los correos no coinciden.";
+        } else {
+            correoError.textContent = "";
+        }
+    });
+
+    // Validar correo existente
+    correoInput.addEventListener("input", function () {
+        fetch(`/existencia_correo?correo=${correoInput.value}`)
+            .then(response => response.json())
+            .then(data => {
+                if (!data.disponible) {  // Cambiar 'data.existe' por 'data.disponible'
+                    correoExistenteError.textContent = "El correo ya está en uso.";
+                } else {
+                    correoExistenteError.textContent = "Check"; // Mensaje para correo disponible
+                    correoExistenteError.style.color = "green"; // Cambia a verde si está disponible
+                }
+            });
+    });
+
+    // Validar contraseñas coincidan
+    passwordConfirmInput.addEventListener("input", function () {
+        if (passwordInput.value !== passwordConfirmInput.value) {
+            passwordError.textContent = "Las contraseñas no coinciden.";
+        } else {
+            passwordError.textContent = "";
+        }
+    });
+});
 
 // Botones de rol
 document.addEventListener('DOMContentLoaded', function() {
@@ -80,7 +108,10 @@ document.addEventListener('DOMContentLoaded', function() {
 // Registrar equipo
 function verificarNombreEquipo() {
     const nombreEquipo = document.getElementById("nombre_equipo").value;
-    if (nombreEquipo.length > 0) {
+    // Solo verificar si no estamos en modo edición
+    const esEdicion = document.getElementById("nombre_equipo").hasAttribute('readonly');
+    
+    if (!esEdicion && nombreEquipo.length > 0) {
         fetch(`/verificar_nombre_equipo/?nombre_equipo=${nombreEquipo}`)
             .then(response => response.json())
             .then(data => {
@@ -95,6 +126,9 @@ function verificarNombreEquipo() {
             });
     }
 }
+
+// Editar equipo
+
 
 // -----------------------------------------------------------------------
 // Tareas
